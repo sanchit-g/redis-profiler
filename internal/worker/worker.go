@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/cespare/xxhash/v2"
 	"github.com/redis/go-redis/v9"
@@ -65,9 +66,17 @@ func (w *Worker) processKey(ctx context.Context, key string) (KeyRecord, error) 
 		keyType = "unknown"
 	}
 
-	ttl, err := ttlCmd.Result()
+	ttlDuration, err := ttlCmd.Result()
 	if err != nil {
-		ttl = 0
+    	ttlDuration = time.Duration(0)
+	}
+
+	// check special values BEFORE converting to seconds
+	ttlSeconds := int64(ttlDuration.Seconds())
+	if ttlDuration == -1 * time.Nanosecond {
+    	ttlSeconds = -1   // no expiry
+	} else if ttlDuration == -2 * time.Nanosecond {
+    	ttlSeconds = -2   // key does not exist
 	}
 
 	return KeyRecord{
@@ -75,6 +84,6 @@ func (w *Worker) processKey(ctx context.Context, key string) (KeyRecord, error) 
 		NameHash: xxhash.Sum64String(key),
 		Bytes:    mem,
 		KeyType:  keyType,
-		TTL:      int64(ttl.Seconds()),
+		TTL:      ttlSeconds,
 	}, nil
 }
