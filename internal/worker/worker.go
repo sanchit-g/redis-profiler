@@ -68,7 +68,7 @@ func (w *Worker) processKey(ctx context.Context, key string) (KeyRecord, error) 
 
 	ttlDuration, err := ttlCmd.Result()
 	if err != nil {
-    	ttlDuration = time.Duration(0)
+		ttlDuration = time.Duration(0)
 	}
 
 	// check special values BEFORE converting to seconds
