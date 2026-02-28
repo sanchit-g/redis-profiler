@@ -114,9 +114,25 @@ func printCliffs(groups []aggregator.GroupStats, threshold int, windowMins int, 
 			continue
 		}
 
+		if len(group.ExpiryBuckets) == 0 {
+			continue
+		}
+		
+		// calculate average keys per bucket
+		totalBucketedKeys := int64(0)
+		for _, count := range group.ExpiryBuckets {
+			totalBucketedKeys += count
+		}
+		avgPerBucket := float64(totalBucketedKeys) / float64(len(group.ExpiryBuckets))
+
 		for bucketStart, count := range group.ExpiryBuckets {
 			pct := float64(count) / float64(group.KeyCount) * 100
-			if pct >= float64(threshold) {
+			
+			// flag only if above threshold AND significantly above average
+			isAboveThreshold := pct >= float64(threshold)
+			isSpike := avgPerBucket > 0 && float64(count) >= avgPerBucket*1.8
+
+			if isAboveThreshold && isSpike {
 				if !found {
 					fmt.Println("⚠  BULK EXPIRY EVENTS DETECTED")
 					fmt.Println()

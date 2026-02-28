@@ -19,7 +19,7 @@ groups:
 output:
   format: table
   sort_by: memory
-  cliff_threshold: 20
-  cliff_window_minutes: 5
+  cliff_threshold: 15
+  cliff_window_minutes: 10
   cliff_ignore_groups:
     - "Rate Limiters"
