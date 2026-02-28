@@ -9,6 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"github.com/sanchit-g/redis-profiler/config"
 	"github.com/sanchit-g/redis-profiler/internal/aggregator"
+	"github.com/sanchit-g/redis-profiler/internal/report"
 	"github.com/sanchit-g/redis-profiler/internal/scanner"
 	"github.com/sanchit-g/redis-profiler/internal/worker"
 	"github.com/spf13/cobra"
@@ -91,13 +92,12 @@ func runProfile(cmd *cobra.Command, args []string) error {
 	}
 
 	// 9. print results
-	fmt.Println("\nResults:")
-	for _, group := range agg.Results() {
-		if group.KeyCount == 0 {
-			continue
-		}
-		fmt.Printf("%s: %d keys, %d bytes\n", group.Name, group.KeyCount, group.TotalBytes)
-	}
+	report.Print(
+		agg.Results(),
+		cfg.Redis.Address,
+		cfg.Output.CliffThreshold,
+		cfg.Output.CliffWindowMins,
+	)
 
 	return nil
 }
