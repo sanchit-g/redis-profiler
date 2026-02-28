@@ -97,6 +97,7 @@ func runProfile(cmd *cobra.Command, args []string) error {
 		cfg.Redis.Address,
 		cfg.Output.CliffThreshold,
 		cfg.Output.CliffWindowMins,
+		cfg.Output.CliffIgnoreGroups,
 	)
 
 	return nil

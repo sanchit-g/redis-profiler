@@ -21,3 +21,5 @@ output:
   sort_by: memory
   cliff_threshold: 20
   cliff_window_minutes: 5
+  cliff_ignore_groups:
+    - "Rate Limiters"

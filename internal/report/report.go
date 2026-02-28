@@ -99,12 +99,18 @@ func printTable(groups []aggregator.GroupStats) {
 	fmt.Println()
 }
 
-func printCliffs(groups []aggregator.GroupStats, threshold int, windowMins int) {
+func printCliffs(groups []aggregator.GroupStats, threshold int, windowMins int, ignoreGroups []string) {
+	// build a set of ignored groups for quick lookup
+	ignored := make(map[string]bool)
+	for _, name := range ignoreGroups {
+		ignored[name] = true
+	}
+	
 	windowSecs := int64(windowMins * 60)
 	found := false
 
 	for _, group := range groups {
-		if group.KeyCount == 0 {
+		if group.KeyCount == 0 || ignored[group.Name] {
 			continue
 		}
 
@@ -138,8 +144,9 @@ func Print(
 	redisAddr string,
 	cliffThreshold int,
 	cliffWindowMins int,
+	cliffIgnoreGroups []string,
 ) {
 	printHeader(groups, redisAddr)
 	printTable(groups)
-	printCliffs(groups, cliffThreshold, cliffWindowMins)
+	printCliffs(groups, cliffThreshold, cliffWindowMins, cliffIgnoreGroups)
 }

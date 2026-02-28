@@ -28,6 +28,7 @@ type OutputConfig struct {
 	SortBy          string `mapstructure:"sort_by"`
 	CliffThreshold  int    `mapstructure:"cliff_threshold"`
 	CliffWindowMins int    `mapstructure:"cliff_window_minutes"`
+	CliffIgnoreGroups []string `mapstructure:"cliff_ignore_groups"`
 }
 
 type Config struct {
