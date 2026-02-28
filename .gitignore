@@ -1,0 +1,16 @@
+# compiled binary
+redis-profiler
+
+# macOS
+.DS_Store
+
+# editor
+.vscode/
+*.swp
+
+# Go test cache
+*.test
+*.out
+
+# env files (never commit secrets)
+.env

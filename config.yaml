@@ -1,0 +1,23 @@
+redis:
+  address: localhost:6379
+  password: ""
+  db: 0
+  tls: false
+
+scanner:
+  batch_size: 100
+  workers: 20
+
+groups:
+  - name: "User Sessions"
+    pattern: "session:*"
+  - name: "Product Cache"
+    pattern: "product:cache:*"
+  - name: "Rate Limiters"
+    pattern: "ratelimit:*"
+
+output:
+  format: table
+  sort_by: memory
+  cliff_threshold: 20
+  cliff_window_minutes: 5
