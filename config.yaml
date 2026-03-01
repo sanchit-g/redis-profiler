@@ -1,6 +1,8 @@
 redis:
   address: localhost:6379
-  password: ""
+  # password: ""
+  # recommended: set via environment variable instead of plaintext here
+  # export REDISPROFILER_REDIS_PASSWORD=your_password
   db: 0
   tls: false
 

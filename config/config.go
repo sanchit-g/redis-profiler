@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -49,6 +50,13 @@ func Load(cfgFile string) (*Config, error) {
 		viper.AddConfigPath(".")
 	}
 
+	// allow environment variables to override config values
+	// e.g. REDISPROFILER_REDIS_PASSWORD overrides redis.password
+	viper.SetEnvPrefix("REDISPROFILER")
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	// defaults
 	viper.SetDefault("redis.address", "localhost:6379")
 	viper.SetDefault("redis.password", "")
 	viper.SetDefault("redis.db", 0)
