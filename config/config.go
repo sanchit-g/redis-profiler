@@ -81,3 +81,17 @@ func Load(cfgFile string) (*Config, error) {
 
 	return &cfg, nil
 }
+
+// Validate checks if the configuration values are valid
+func (c *Config) Validate() error {
+	if c.Scanner.BatchSize <= 0 {
+		return fmt.Errorf("scanner.batch_size must be positive, got %d", c.Scanner.BatchSize)
+	}
+	if c.Scanner.Workers <= 0 {
+		return fmt.Errorf("scanner.workers must be positive, got %d", c.Scanner.Workers)
+	}
+	if c.Redis.Address == "" {
+		return fmt.Errorf("redis.address cannot be empty")
+	}
+	return nil
+}
