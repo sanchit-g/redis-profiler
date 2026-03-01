@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"os"
 	"sync"
@@ -42,11 +43,19 @@ func runProfile(cmd *cobra.Command, args []string) error {
 	fmt.Printf("connecting to Redis at %s\n", cfg.Redis.Address)
 	
 	// connect to Redis
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     cfg.Redis.Address,
-		Password: cfg.Redis.Password,
-		DB:       cfg.Redis.DB,
-	})
+	redisOpts := &redis.Options{
+    	Addr:     cfg.Redis.Address,
+    	Password: cfg.Redis.Password,
+    	DB:       cfg.Redis.DB,
+	}
+
+	if cfg.Redis.TLS {
+    	redisOpts.TLSConfig = &tls.Config{
+        	MinVersion: tls.VersionTLS12,
+    	}
+	}
+
+	rdb := redis.NewClient(redisOpts)
 	defer rdb.Close()
 
 	if err := rdb.Ping(ctx).Err(); err != nil {
