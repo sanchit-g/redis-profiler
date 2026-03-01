@@ -5,17 +5,20 @@ import (
 	"fmt"
 
 	"github.com/redis/go-redis/v9"
+	"github.com/sanchit-g/redis-profiler/internal/progress"
 )
 
 type Scanner struct {
-	rdb *redis.Client
-	batchSize int64
+	rdb			*redis.Client
+	batchSize	int64
+	tracker 	*progress.Tracker
 }
 
-func New(rdb *redis.Client, batchSize int64) *Scanner {
+func New(rdb *redis.Client, batchSize int64, tracker *progress.Tracker) *Scanner {
 	return &Scanner{
 		rdb: rdb,
 		batchSize: batchSize,
+		tracker: tracker,
 	}
 }
 
@@ -31,6 +34,7 @@ func (s *Scanner) Scan(ctx context.Context, workCh chan<- string) error {
 
 		for _, key := range keys {
 			workCh <- key
+			s.tracker.Increment()
 			totalKeys++
 		}
 
@@ -40,7 +44,6 @@ func (s *Scanner) Scan(ctx context.Context, workCh chan<- string) error {
 			break
 		}
 	}
-
-	fmt.Printf("scan complete: %d keys found\n", totalKeys)
+	
 	return nil
 }
