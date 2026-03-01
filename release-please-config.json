@@ -4,7 +4,7 @@
       "release-type": "go",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
-      "extra-files": ["version.go"],
+      "extra-files": [{"type": "generic", "path": "version.go"}],
       "changelog-sections": [
         {"type": "feat", "section": "Features"},
         {"type": "fix", "section": "Bug Fixes"},
