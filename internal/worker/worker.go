@@ -73,10 +73,11 @@ func (w *Worker) processKey(ctx context.Context, key string) (KeyRecord, error) 
 
 	// check special values BEFORE converting to seconds
 	ttlSeconds := int64(ttlDuration.Seconds())
-	if ttlDuration == -1 * time.Nanosecond {
-    	ttlSeconds = -1   // no expiry
-	} else if ttlDuration == -2 * time.Nanosecond {
-    	ttlSeconds = -2   // key does not exist
+	switch ttlDuration {
+		case -1 * time.Nanosecond:
+    		ttlSeconds = -1   // no expiry
+		case -2 * time.Nanosecond:
+    		ttlSeconds = -2   // key does not exist
 	}
 
 	return KeyRecord{
