@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2-beta](https://github.com/sanchit-g/redis-profiler/compare/v0.1.1-beta...v0.1.2-beta) (2026-03-01)
+
+
+### Bug Fixes
+
+* configure release-please to update version.go on release ([#9](https://github.com/sanchit-g/redis-profiler/issues/9)) ([f3bb6e3](https://github.com/sanchit-g/redis-profiler/commit/f3bb6e301823c3b92a9855c268cb3889f39d93eb))
+* verify release-please updates version.go correctly ([#11](https://github.com/sanchit-g/redis-profiler/issues/11)) ([d21dd2a](https://github.com/sanchit-g/redis-profiler/commit/d21dd2a639628438124c78c8a8c391a77635b045))
+* verify release-please updates version.go correctly ([#13](https://github.com/sanchit-g/redis-profiler/issues/13)) ([0ea5174](https://github.com/sanchit-g/redis-profiler/commit/0ea5174bffbf0aee36f5d31f112a91dd37530107))
+
 ## [0.1.1-beta](https://github.com/sanchit-g/redis-profiler/compare/v0.1.0-beta...v0.1.1-beta) (2026-03-01)
 
 
