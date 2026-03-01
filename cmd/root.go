@@ -1,10 +1,10 @@
 package cmd
 
 import (
-    "fmt"
-    "os"
-
-    "github.com/spf13/cobra"
+	"fmt"
+	"os"
+	
+	"github.com/spf13/cobra"
 )
 
 var longDesc = `redis-profiler scans your Redis keyspace and produces a memory
