@@ -68,12 +68,12 @@ func runProfile(cmd *cobra.Command, args []string) error {
 	resultsCh := make(chan worker.KeyRecord, 1000)
 
 	// start scanner in background goroutine
-	var scanErr error
+	scanErrCh := make(chan error, 1)
 	go func() {
 		defer close(workCh)
 		defer close(done)
 		s := scanner.New(rdb, int64(cfg.Scanner.BatchSize), tracker)
-		scanErr = s.Scan(ctx, workCh)
+		scanErrCh <- s.Scan(ctx, workCh)
 	}()
 	
 	// start worker pool
@@ -97,9 +97,9 @@ func runProfile(cmd *cobra.Command, args []string) error {
 	fmt.Printf("scan complete: %d keys found\n", tracker.Current())
 
 	// check for scan errors
-	if scanErr != nil {
-		fmt.Fprintf(os.Stderr, "scan error: %v\n", scanErr)
-		return scanErr
+	if err := <-scanErrCh; err != nil {
+		fmt.Fprintf(os.Stderr, "scan error: %v\n", err)
+		return err
 	}
 
 	// print results
