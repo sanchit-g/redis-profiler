@@ -1,13 +1,13 @@
 package report
 
 import (
-"bytes"
-"io"
-"os"
-"strings"
-"testing"
+	"bytes"
+	"io"
+	"os"
+	"strings"
+	"testing"
 
-"github.com/sanchit-g/redis-profiler/internal/aggregator"
+	"github.com/sanchit-g/redis-profiler/internal/aggregator"
 )
 
 // captureOutput intercepts stdout for testing
