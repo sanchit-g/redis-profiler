@@ -40,6 +40,11 @@ func runProfile(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	if err := cfg.Validate(); err != nil {
+		fmt.Fprintf(os.Stderr, "invalid config: %v\n", err)
+		return err
+	}
+
 	fmt.Printf("connecting to Redis at %s\n", cfg.Redis.Address)
 	
 	// connect to Redis
